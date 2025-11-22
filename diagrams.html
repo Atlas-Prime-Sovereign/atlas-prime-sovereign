@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dentonia Supernova Model - Comprehensive Diagrams</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0B0F19 0%, #1a1f2e 100%);
+            color: #E2E8F0;
+        }
+        .font-regal { font-family: 'Cinzel', serif; }
+        .diagram-card {
+            background: rgba(21, 27, 43, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            transition: all 0.3s ease;
+        }
+        .diagram-card:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.1);
+        }
+        .sankey-path {
+            fill: none;
+            stroke-opacity: 0.5;
+            transition: stroke-opacity 0.3s;
+        }
+        .sankey-path:hover {
+            stroke-opacity: 0.8;
+        }
+        .node-rect {
+            stroke: #D4AF37;
+            stroke-width: 2;
+            fill: rgba(212, 175, 55, 0.2);
+        }
+        .gold-accent { color: #D4AF37; }
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-8">
+
+    <!-- Header -->
+    <header class="text-center mb-12">
+        <div class="inline-flex items-center gap-3 mb-4">
+            <i data-lucide="sparkles" class="w-12 h-12 gold-accent"></i>
+            <h1 class="font-regal text-5xl md:text-6xl gold-accent">Dentonia Supernova Model</h1>
+        </div>
+        <p class="text-xl text-slate-400 max-w-3xl mx-auto">
+            Comprehensive Visualization Suite - Trigger Dynamics, Retaliation Flows, and Systemic Patterns
+        </p>
+        <div class="mt-6 flex justify-center gap-4 flex-wrap">
+            <span class="px-4 py-2 bg-blue-600/20 border border-blue-600/30 rounded-full text-sm text-blue-400">
+                📊 Interactive Diagrams
+            </span>
+            <span class="px-4 py-2 bg-purple-600/20 border border-purple-600/30 rounded-full text-sm text-purple-400">
+                🔄 Dynamic Flows
+            </span>
+            <span class="px-4 py-2 bg-green-600/20 border border-green-600/30 rounded-full text-sm text-green-400">
+                ⚡ Real-time Updates
+            </span>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto mb-12 sticky top-4 z-50">
+        <div class="diagram-card rounded-xl p-4 flex flex-wrap justify-center gap-4">
+            <a href="#trigger-retaliation" class="px-4 py-2 hover:bg-yellow-600/20 rounded-lg transition-colors flex items-center gap-2">
+                <i data-lucide="zap" class="w-4 h-4"></i> Trigger to Retaliation
+            </a>
+            <a href="#supernova-sankey" class="px-4 py-2 hover:bg-yellow-600/20 rounded-lg transition-colors flex items-center gap-2">
+                <i data-lucide="git-branch" class="w-4 h-4"></i> Supernova Sankey
+            </a>
+            <a href="#flow-analysis" class="px-4 py-2 hover:bg-yellow-600/20 rounded-lg transition-colors flex items-center gap-2">
+                <i data-lucide="activity" class="w-4 h-4"></i> Flow Analysis
+            </a>
+            <a href="#system-overview" class="px-4 py-2 hover:bg-yellow-600/20 rounded-lg transition-colors flex items-center gap-2">
+                <i data-lucide="layers" class="w-4 h-4"></i> System Overview
+            </a>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto space-y-16">
+
+        <!-- Section 1: Trigger to Retaliation Flow -->
+        <section id="trigger-retaliation" class="diagram-card rounded-2xl p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <i data-lucide="zap" class="w-8 h-8 gold-accent"></i>
+                <h2 class="font-regal text-3xl gold-accent">Trigger to Retaliation Flow</h2>
+            </div>
+            <p class="text-slate-400 mb-8">
+                Comprehensive visualization of the trigger-response mechanism, showing how initial events cascade through the system leading to retaliation outcomes.
+            </p>
+
+            <!-- Interactive Sankey Diagram -->
+            <div class="bg-black/30 rounded-xl p-6 mb-6">
+                <div id="trigger-sankey" class="w-full" style="height: 600px;"></div>
+            </div>
+
+            <!-- Key Insights -->
+            <div class="grid md:grid-cols-3 gap-4 mt-6">
+                <div class="bg-red-600/10 border border-red-600/30 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400"></i>
+                        <h4 class="font-bold text-red-400">Initial Triggers</h4>
+                    </div>
+                    <p class="text-sm text-slate-400">External stimuli that initiate cascade events</p>
+                </div>
+                <div class="bg-yellow-600/10 border border-yellow-600/30 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="git-merge" class="w-5 h-5 text-yellow-400"></i>
+                        <h4 class="font-bold text-yellow-400">Response Pathways</h4>
+                    </div>
+                    <p class="text-sm text-slate-400">Multiple branching response mechanisms</p>
+                </div>
+                <div class="bg-purple-600/10 border border-purple-600/30 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="target" class="w-5 h-5 text-purple-400"></i>
+                        <h4 class="font-bold text-purple-400">Retaliation Outcomes</h4>
+                    </div>
+                    <p class="text-sm text-slate-400">Final system state and equilibrium points</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 2: Supernova Sankey Comprehensive -->
+        <section id="supernova-sankey" class="diagram-card rounded-2xl p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <i data-lucide="git-branch" class="w-8 h-8 gold-accent"></i>
+                <h2 class="font-regal text-3xl gold-accent">Supernova Sankey - Energy Distribution</h2>
+            </div>
+            <p class="text-slate-400 mb-8">
+                Energy flow patterns within the Supernova Model, illustrating how resources and influences propagate through the network.
+            </p>
+
+            <div class="bg-black/30 rounded-xl p-6 mb-6">
+                <div id="supernova-sankey-main" class="w-full" style="height: 700px;"></div>
+            </div>
+
+            <!-- Flow Metrics -->
+            <div class="grid md:grid-cols-4 gap-4 mt-6">
+                <div class="text-center p-4 bg-blue-600/10 rounded-lg border border-blue-600/30">
+                    <div class="text-3xl font-bold text-blue-400 mb-1">142</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-wide">Total Nodes</div>
+                </div>
+                <div class="text-center p-4 bg-green-600/10 rounded-lg border border-green-600/30">
+                    <div class="text-3xl font-bold text-green-400 mb-1">87%</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-wide">Flow Efficiency</div>
+                </div>
+                <div class="text-center p-4 bg-purple-600/10 rounded-lg border border-purple-600/30">
+                    <div class="text-3xl font-bold text-purple-400 mb-1">3.4s</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-wide">Avg Response Time</div>
+                </div>
+                <div class="text-center p-4 bg-yellow-600/10 rounded-lg border border-yellow-600/30">
+                    <div class="text-3xl font-bold text-yellow-400 mb-1">23</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-wide">Critical Paths</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 3: Flow Analysis Matrix -->
+        <section id="flow-analysis" class="diagram-card rounded-2xl p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <i data-lucide="activity" class="w-8 h-8 gold-accent"></i>
+                <h2 class="font-regal text-3xl gold-accent">Behavioral Flow Analysis</h2>
+            </div>
+            <p class="text-slate-400 mb-8">
+                Detailed breakdown of behavioral patterns and decision matrices within the Supernova ecosystem.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Decision Matrix -->
+                <div class="bg-black/30 rounded-xl p-6">
+                    <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                        <i data-lucide="grid-3x3" class="w-5 h-5 gold-accent"></i>
+                        Decision Matrix
+                    </h3>
+                    <div id="decision-matrix" class="w-full" style="height: 400px;"></div>
+                </div>
+
+                <!-- Timeline Flow -->
+                <div class="bg-black/30 rounded-xl p-6">
+                    <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                        <i data-lucide="clock" class="w-5 h-5 gold-accent"></i>
+                        Temporal Flow
+                    </h3>
+                    <div id="temporal-flow" class="w-full" style="height: 400px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 4: System Overview -->
+        <section id="system-overview" class="diagram-card rounded-2xl p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <i data-lucide="layers" class="w-8 h-8 gold-accent"></i>
+                <h2 class="font-regal text-3xl gold-accent">Complete System Architecture</h2>
+            </div>
+            <p class="text-slate-400 mb-8">
+                Holistic view of the entire Dentonia Supernova Model, integrating all subsystems and feedback loops.
+            </p>
+
+            <div class="bg-black/30 rounded-xl p-6">
+                <div id="system-architecture" class="w-full" style="height: 800px;"></div>
+            </div>
+
+            <!-- System Components -->
+            <div class="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="p-4 bg-gradient-to-br from-blue-600/10 to-transparent border border-blue-600/30 rounded-lg">
+                    <h4 class="font-bold text-blue-400 mb-2 flex items-center gap-2">
+                        <i data-lucide="database" class="w-4 h-4"></i> Data Layer
+                    </h4>
+                    <p class="text-xs text-slate-400">Core data structures and repositories</p>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-purple-600/10 to-transparent border border-purple-600/30 rounded-lg">
+                    <h4 class="font-bold text-purple-400 mb-2 flex items-center gap-2">
+                        <i data-lucide="cpu" class="w-4 h-4"></i> Processing Layer
+                    </h4>
+                    <p class="text-xs text-slate-400">Computational and analysis engines</p>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-green-600/10 to-transparent border border-green-600/30 rounded-lg">
+                    <h4 class="font-bold text-green-400 mb-2 flex items-center gap-2">
+                        <i data-lucide="network" class="w-4 h-4"></i> Network Layer
+                    </h4>
+                    <p class="text-xs text-slate-400">Communication and distribution systems</p>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-yellow-600/10 to-transparent border border-yellow-600/30 rounded-lg">
+                    <h4 class="font-bold text-yellow-400 mb-2 flex items-center gap-2">
+                        <i data-lucide="eye" class="w-4 h-4"></i> Interface Layer
+                    </h4>
+                    <p class="text-xs text-slate-400">User interaction and visualization</p>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-red-600/10 to-transparent border border-red-600/30 rounded-lg">
+                    <h4 class="font-bold text-red-400 mb-2 flex items-center gap-2">
+                        <i data-lucide="shield" class="w-4 h-4"></i> Security Layer
+                    </h4>
+                    <p class="text-xs text-slate-400">Authentication and authorization</p>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-pink-600/10 to-transparent border border-pink-600/30 rounded-lg">
+                    <h4 class="font-bold text-pink-400 mb-2 flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Feedback Loops
+                    </h4>
+                    <p class="text-xs text-slate-400">Continuous improvement mechanisms</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-12 text-slate-500">
+            <div class="mb-4">
+                <i data-lucide="sparkles" class="w-6 h-6 inline gold-accent"></i>
+            </div>
+            <p class="font-regal text-lg mb-2 gold-accent">Dentonia Research Initiative</p>
+            <p class="text-sm">Supernova Model Visualization Suite • 2025</p>
+            <p class="text-xs mt-4">Part of the Atlas-Prime Sovereign Project</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Color palette
+        const colors = {
+            trigger: '#EF4444',
+            process: '#F59E0B',
+            response: '#8B5CF6',
+            outcome: '#10B981',
+            node: '#D4AF37',
+            link: 'rgba(212, 175, 55, 0.3)'
+        };
+
+        // Trigger to Retaliation Sankey
+        function createTriggerSankey() {
+            const data = {
+                nodes: [
+                    // Triggers (0-3)
+                    { name: 'External Stimulus', color: colors.trigger },
+                    { name: 'Policy Violation', color: colors.trigger },
+                    { name: 'System Anomaly', color: colors.trigger },
+                    { name: 'User Action', color: colors.trigger },
+
+                    // Processing (4-7)
+                    { name: 'Detection Layer', color: colors.process },
+                    { name: 'Analysis Engine', color: colors.process },
+                    { name: 'Decision Matrix', color: colors.process },
+                    { name: 'Priority Queue', color: colors.process },
+
+                    // Responses (8-11)
+                    { name: 'Immediate Response', color: colors.response },
+                    { name: 'Escalation Path', color: colors.response },
+                    { name: 'Mitigation Protocol', color: colors.response },
+                    { name: 'Logging System', color: colors.response },
+
+                    // Outcomes (12-15)
+                    { name: 'Resolved', color: colors.outcome },
+                    { name: 'Contained', color: colors.outcome },
+                    { name: 'Escalated', color: colors.outcome },
+                    { name: 'Monitored', color: colors.outcome }
+                ],
+                links: [
+                    // Triggers to Detection
+                    { source: 0, target: 4, value: 40 },
+                    { source: 1, target: 4, value: 30 },
+                    { source: 2, target: 4, value: 25 },
+                    { source: 3, target: 4, value: 35 },
+
+                    // Detection to Analysis
+                    { source: 4, target: 5, value: 130 },
+
+                    // Analysis to Decision & Priority
+                    { source: 5, target: 6, value: 80 },
+                    { source: 5, target: 7, value: 50 },
+
+                    // Decision to Responses
+                    { source: 6, target: 8, value: 35 },
+                    { source: 6, target: 9, value: 25 },
+                    { source: 6, target: 10, value: 20 },
+
+                    // Priority to Responses
+                    { source: 7, target: 8, value: 20 },
+                    { source: 7, target: 11, value: 30 },
+
+                    // Responses to Outcomes
+                    { source: 8, target: 12, value: 40 },
+                    { source: 8, target: 13, value: 15 },
+                    { source: 9, target: 14, value: 25 },
+                    { source: 10, target: 12, value: 15 },
+                    { source: 10, target: 13, value: 5 },
+                    { source: 11, target: 15, value: 30 }
+                ]
+            };
+
+            renderSankey('trigger-sankey', data, 600);
+        }
+
+        // Supernova Energy Sankey
+        function createSupernovaSankey() {
+            const data = {
+                nodes: [
+                    { name: 'Core Energy Source', color: '#EAB308' },
+                    { name: 'Primary Distribution', color: '#F59E0B' },
+                    { name: 'Secondary Channels', color: '#FB923C' },
+                    { name: 'Tertiary Network', color: '#FDBA74' },
+                    { name: 'User Interface', color: '#10B981' },
+                    { name: 'Data Processing', color: '#3B82F6' },
+                    { name: 'Analytics Engine', color: '#8B5CF6' },
+                    { name: 'Storage Systems', color: '#06B6D4' },
+                    { name: 'Output Channels', color: '#14B8A6' },
+                    { name: 'Feedback Loop', color: '#EC4899' }
+                ],
+                links: [
+                    { source: 0, target: 1, value: 100 },
+                    { source: 1, target: 2, value: 45 },
+                    { source: 1, target: 4, value: 30 },
+                    { source: 1, target: 5, value: 25 },
+                    { source: 2, target: 3, value: 45 },
+                    { source: 3, target: 6, value: 25 },
+                    { source: 3, target: 7, value: 20 },
+                    { source: 4, target: 8, value: 30 },
+                    { source: 5, target: 6, value: 25 },
+                    { source: 6, target: 8, value: 50 },
+                    { source: 7, target: 9, value: 20 },
+                    { source: 8, target: 9, value: 80 },
+                    { source: 9, target: 0, value: 15 }
+                ]
+            };
+
+            renderSankey('supernova-sankey-main', data, 700);
+        }
+
+        // Generic Sankey Renderer using D3
+        function renderSankey(containerId, data, height) {
+            const container = d3.select(`#${containerId}`);
+            const width = container.node().getBoundingClientRect().width;
+
+            const svg = container.append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const sankey = d3.sankey()
+                .nodeWidth(20)
+                .nodePadding(20)
+                .extent([[50, 10], [width - 50, height - 10]]);
+
+            const sankeyData = sankey({
+                nodes: data.nodes.map(d => Object.assign({}, d)),
+                links: data.links.map(d => Object.assign({}, d))
+            });
+
+            // Links
+            svg.append('g')
+                .selectAll('path')
+                .data(sankeyData.links)
+                .join('path')
+                .attr('class', 'sankey-path')
+                .attr('d', d3.sankeyLinkHorizontal())
+                .attr('stroke', d => d.source.color || colors.link)
+                .attr('stroke-width', d => Math.max(1, d.width))
+                .append('title')
+                .text(d => `${d.source.name} → ${d.target.name}\n${d.value}`);
+
+            // Nodes
+            const node = svg.append('g')
+                .selectAll('g')
+                .data(sankeyData.nodes)
+                .join('g');
+
+            node.append('rect')
+                .attr('class', 'node-rect')
+                .attr('x', d => d.x0)
+                .attr('y', d => d.y0)
+                .attr('height', d => d.y1 - d.y0)
+                .attr('width', d => d.x1 - d.x0)
+                .attr('fill', d => d.color || colors.node)
+                .append('title')
+                .text(d => `${d.name}\n${d.value}`);
+
+            node.append('text')
+                .attr('x', d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
+                .attr('y', d => (d.y1 + d.y0) / 2)
+                .attr('dy', '0.35em')
+                .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
+                .attr('fill', '#E2E8F0')
+                .attr('font-size', '12px')
+                .text(d => d.name);
+        }
+
+        // Decision Matrix Heatmap
+        function createDecisionMatrix() {
+            const container = d3.select('#decision-matrix');
+            const width = container.node().getBoundingClientRect().width;
+            const height = 400;
+
+            const svg = container.append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const matrix = [
+                [0.8, 0.3, 0.5, 0.9, 0.2],
+                [0.4, 0.7, 0.6, 0.3, 0.8],
+                [0.6, 0.5, 0.9, 0.7, 0.4],
+                [0.3, 0.8, 0.4, 0.6, 0.9],
+                [0.9, 0.4, 0.7, 0.5, 0.6]
+            ];
+
+            const cellSize = Math.min(width, height) / 6;
+            const colorScale = d3.scaleLinear()
+                .domain([0, 1])
+                .range(['#1e293b', '#D4AF37']);
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${(width - cellSize * 5) / 2}, ${(height - cellSize * 5) / 2})`);
+
+            matrix.forEach((row, i) => {
+                row.forEach((value, j) => {
+                    g.append('rect')
+                        .attr('x', j * cellSize)
+                        .attr('y', i * cellSize)
+                        .attr('width', cellSize - 2)
+                        .attr('height', cellSize - 2)
+                        .attr('fill', colorScale(value))
+                        .attr('rx', 4);
+
+                    g.append('text')
+                        .attr('x', j * cellSize + cellSize / 2)
+                        .attr('y', i * cellSize + cellSize / 2)
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '0.35em')
+                        .attr('fill', value > 0.5 ? '#0B0F19' : '#E2E8F0')
+                        .attr('font-size', '14px')
+                        .attr('font-weight', 'bold')
+                        .text(value.toFixed(1));
+                });
+            });
+        }
+
+        // Temporal Flow Timeline
+        function createTemporalFlow() {
+            const container = d3.select('#temporal-flow');
+            const width = container.node().getBoundingClientRect().width;
+            const height = 400;
+
+            const svg = container.append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const data = [
+                { time: 0, value: 20, label: 'T0: Trigger' },
+                { time: 1, value: 45, label: 'T1: Detection' },
+                { time: 2, value: 70, label: 'T2: Analysis' },
+                { time: 3, value: 85, label: 'T3: Response' },
+                { time: 4, value: 60, label: 'T4: Resolution' },
+                { time: 5, value: 30, label: 'T5: Stabilization' }
+            ];
+
+            const margin = { top: 40, right: 40, bottom: 60, left: 60 };
+            const innerWidth = width - margin.left - margin.right;
+            const innerHeight = height - margin.top - margin.bottom;
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 5])
+                .range([0, innerWidth]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 100])
+                .range([innerHeight, 0]);
+
+            const line = d3.line()
+                .x(d => xScale(d.time))
+                .y(d => yScale(d.value))
+                .curve(d3.curveMonotoneX);
+
+            // Gradient
+            const gradient = svg.append('defs')
+                .append('linearGradient')
+                .attr('id', 'line-gradient')
+                .attr('gradientUnits', 'userSpaceOnUse')
+                .attr('x1', 0).attr('y1', yScale(0))
+                .attr('x2', 0).attr('y2', yScale(100));
+
+            gradient.append('stop')
+                .attr('offset', '0%')
+                .attr('stop-color', '#D4AF37');
+
+            gradient.append('stop')
+                .attr('offset', '100%')
+                .attr('stop-color', '#8B5CF6');
+
+            // Area under curve
+            const area = d3.area()
+                .x(d => xScale(d.time))
+                .y0(innerHeight)
+                .y1(d => yScale(d.value))
+                .curve(d3.curveMonotoneX);
+
+            g.append('path')
+                .datum(data)
+                .attr('fill', 'url(#line-gradient)')
+                .attr('fill-opacity', 0.2)
+                .attr('d', area);
+
+            // Line
+            g.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', 'url(#line-gradient)')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Points
+            g.selectAll('circle')
+                .data(data)
+                .join('circle')
+                .attr('cx', d => xScale(d.time))
+                .attr('cy', d => yScale(d.value))
+                .attr('r', 6)
+                .attr('fill', '#D4AF37')
+                .attr('stroke', '#0B0F19')
+                .attr('stroke-width', 2);
+
+            // Labels
+            g.selectAll('text.label')
+                .data(data)
+                .join('text')
+                .attr('class', 'label')
+                .attr('x', d => xScale(d.time))
+                .attr('y', d => yScale(d.value) - 15)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#E2E8F0')
+                .attr('font-size', '11px')
+                .text(d => d.label);
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${innerHeight})`)
+                .call(d3.axisBottom(xScale).ticks(5))
+                .attr('color', '#64748b');
+
+            g.append('g')
+                .call(d3.axisLeft(yScale).ticks(5))
+                .attr('color', '#64748b');
+        }
+
+        // System Architecture Network
+        function createSystemArchitecture() {
+            const container = d3.select('#system-architecture');
+            const width = container.node().getBoundingClientRect().width;
+            const height = 800;
+
+            const svg = container.append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const nodes = [
+                { id: 'core', label: 'Core System', x: width/2, y: height/2, r: 60, color: '#D4AF37' },
+                { id: 'data', label: 'Data Layer', x: width/4, y: height/4, r: 40, color: '#3B82F6' },
+                { id: 'process', label: 'Processing', x: 3*width/4, y: height/4, r: 40, color: '#8B5CF6' },
+                { id: 'network', label: 'Network', x: width/4, y: 3*height/4, r: 40, color: '#10B981' },
+                { id: 'interface', label: 'Interface', x: 3*width/4, y: 3*height/4, r: 40, color: '#F59E0B' },
+                { id: 'security', label: 'Security', x: width/2, y: height/6, r: 35, color: '#EF4444' },
+                { id: 'feedback', label: 'Feedback', x: width/2, y: 5*height/6, r: 35, color: '#EC4899' }
+            ];
+
+            const links = [
+                { source: 'core', target: 'data' },
+                { source: 'core', target: 'process' },
+                { source: 'core', target: 'network' },
+                { source: 'core', target: 'interface' },
+                { source: 'core', target: 'security' },
+                { source: 'core', target: 'feedback' },
+                { source: 'data', target: 'process' },
+                { source: 'process', target: 'interface' },
+                { source: 'network', target: 'interface' },
+                { source: 'security', target: 'data' },
+                { source: 'feedback', target: 'network' }
+            ];
+
+            // Draw links
+            const linkSelection = svg.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('x1', d => nodes.find(n => n.id === d.source).x)
+                .attr('y1', d => nodes.find(n => n.id === d.source).y)
+                .attr('x2', d => nodes.find(n => n.id === d.target).x)
+                .attr('y2', d => nodes.find(n => n.id === d.target).y)
+                .attr('stroke', 'rgba(212, 175, 55, 0.3)')
+                .attr('stroke-width', 2);
+
+            // Draw nodes
+            const nodeSelection = svg.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g');
+
+            nodeSelection.append('circle')
+                .attr('cx', d => d.x)
+                .attr('cy', d => d.y)
+                .attr('r', d => d.r)
+                .attr('fill', d => d.color)
+                .attr('fill-opacity', 0.2)
+                .attr('stroke', d => d.color)
+                .attr('stroke-width', 3);
+
+            nodeSelection.append('text')
+                .attr('x', d => d.x)
+                .attr('y', d => d.y)
+                .attr('text-anchor', 'middle')
+                .attr('dy', '0.35em')
+                .attr('fill', '#E2E8F0')
+                .attr('font-size', '14px')
+                .attr('font-weight', 'bold')
+                .text(d => d.label);
+        }
+
+        // Initialize all diagrams
+        window.addEventListener('load', () => {
+            createTriggerSankey();
+            createSupernovaSankey();
+            createDecisionMatrix();
+            createTemporalFlow();
+            createSystemArchitecture();
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
