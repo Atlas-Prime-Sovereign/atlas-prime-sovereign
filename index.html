@@ -175,145 +175,99 @@
             70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
             100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
-
-        /* Mobile-First Improvements */
-        @media (max-width: 768px) {
-            .regal-glass {
-                backdrop-filter: blur(8px);
-            }
-
-            #chat-container {
-                padding-bottom: 120px;
-            }
-        }
-
+    
+        /* Mobile-First Styles */
         .tool-tab {
+            color: #94a3b8;
+            border-bottom: 2px solid transparent;
             transition: all 0.3s ease;
         }
+        .tool-tab.active {
+            color: #D4AF37;
+            border-bottom-color: #D4AF37;
+        }
+
+        /* Better touch targets */
+        button {
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        /* Smooth transitions */
+        #slide-menu {
+            will-change: transform;
+        }
+
     </style>
     <!-- Composio/Rube Integration -->
     <script src="https://cdn.jsdelivr.net/npm/composio-core@latest/dist/index.umd.js"></script>
 </head>
 <body>
 
-    <!-- Mobile-First Top Bar -->
-    <header class="fixed top-0 left-0 right-0 z-30 h-16 border-b border-slate-800/50 flex items-center justify-between px-4 bg-[#0B0F19]/95 backdrop-blur-md">
-        <button id="menu-btn" class="text-yellow-500 p-2 hover:bg-yellow-500/10 rounded-lg transition-all">
+    <!-- New Mobile-First Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 h-16 border-b border-slate-800/50 flex items-center justify-between px-4 bg-black/95 backdrop-blur-sm">
+        <button id="menu-toggle" onclick="toggleMenu()" class="text-yellow-500 p-2">
             <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
 
-        <select id="persona-select" class="flex-1 mx-3 bg-slate-900/80 border border-yellow-500/30 rounded-lg px-3 py-2 text-yellow-500 font-regal text-sm focus:outline-none focus:border-yellow-500">
-            <option value="Policy Architect">👑 Policy Architect</option>
-            <option value="Compliance & Risk Analyst">🛡️ Risk Analyst</option>
-            <option value="Ethical Auditor">⚖️ Ethical Auditor</option>
-            <option value="Data Lineage Officer">🔗 Data Lineage</option>
-        </select>
+        <div class="flex-1 mx-4">
+            <select id="persona-selector" onchange="switchPersona(this.value)" class="w-full bg-slate-900/50 border border-yellow-500/30 rounded-lg px-3 py-2 text-yellow-500 font-regal text-sm focus:outline-none focus:border-yellow-500">
+                <option value="Policy Architect">👑 Policy Architect</option>
+                <option value="Compliance & Risk Analyst">🛡️ Risk Analyst</option>
+                <option value="Ethical Auditor">⚖️ Ethical Auditor</option>
+                <option value="Data Lineage Officer">🔗 Data Lineage</option>
+            </select>
+        </div>
 
-        <button onclick="openSettings()" class="p-2 text-slate-400 hover:text-yellow-500 hover:bg-slate-800/50 rounded-lg transition-all">
-            <i data-lucide="settings" class="w-5 h-5"></i>
-        </button>
+        <div class="flex items-center gap-2">
+            <span id="status-dot" class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
+            <button onclick="openSettings()" class="p-2 text-slate-400 hover:text-yellow-500">
+                <i data-lucide="settings" class="w-5 h-5"></i>
+            </button>
+        </div>
     </header>
 
-    <!-- Slide Menu -->
-    <div id="slide-menu" class="fixed inset-y-0 left-0 w-72 bg-[#080b12] border-r border-slate-800 transform -translate-x-full transition-transform duration-300 z-40">
+    <!-- Slide-Out Menu -->
+    <div id="slide-menu" class="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-[#080b12] border-r border-slate-800 transform -translate-x-full transition-transform duration-300 z-40 flex flex-col">
         <div class="p-6 border-b border-slate-800/50 flex justify-between items-center">
             <div>
-                <h1 class="font-regal text-lg text-yellow-500 tracking-widest flex items-center gap-2">
-                    <i data-lucide="crown" class="w-5 h-5"></i>
+                <h1 class="font-regal text-xl text-yellow-500 tracking-widest flex items-center gap-2">
+                    <i data-lucide="crown" class="w-6 h-6"></i>
                     SOVEREIGN
                 </h1>
-                <p class="text-xs text-slate-500 mt-1">Rube Edition v3.2</p>
+                <p class="text-xs text-slate-500 mt-1 uppercase tracking-wide">v3.2 - Rube Edition</p>
             </div>
-            <button id="menu-close-btn" class="text-slate-400 hover:text-white">
+            <button onclick="toggleMenu()" class="text-slate-400 hover:text-white">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
         </div>
 
-        <div class="p-4 space-y-3">
-            <button onclick="showWorkspace()" class="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-yellow-600/20 to-yellow-500/10 border border-yellow-600/30 rounded-lg text-yellow-500 hover:from-yellow-600/30 hover:to-yellow-500/20 transition-all font-bold">
-                <i data-lucide="zap" class="w-5 h-5"></i>
-                Quantum Workspace
-            </button>
-
-            <button onclick="openComposioSettings()" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all">
-                <i data-lucide="link" class="w-4 h-4"></i>
-                Rube Integration
-                <span id="rube-menu-status" class="ml-auto w-2 h-2 rounded-full bg-slate-600"></span>
-            </button>
-
-            <button onclick="clearChat()" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                Clear Chat
-            </button>
-        </div>
-    </div>
-
-    <div id="menu-overlay" class="fixed inset-0 bg-black/60 z-35 hidden backdrop-blur-sm"></div>
-
-    <!-- Quantum Workspace -->
-    <div id="workspace" class="fixed inset-0 bg-[#0B0F19] z-50 hidden flex flex-col">
-        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/30">
-            <h2 class="font-regal text-xl text-yellow-500 flex items-center gap-2">
-                <i data-lucide="zap" class="w-6 h-6"></i>
-                Quantum Workspace
-            </h2>
-            <button onclick="closeWorkspace()" class="text-slate-400 hover:text-white p-2">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-        </div>
-
-        <div class="flex overflow-x-auto border-b border-slate-800 bg-slate-900/20">
-            <button data-tool="formatter" class="tool-tab px-4 py-3 text-sm border-b-2 border-yellow-500 text-yellow-500 whitespace-nowrap">
-                <i data-lucide="file-text" class="w-4 h-4 inline mr-2"></i>Document Formatter
-            </button>
-            <button data-tool="html" class="tool-tab px-4 py-3 text-sm border-b-2 border-transparent text-slate-400 whitespace-nowrap">
-                <i data-lucide="code" class="w-4 h-4 inline mr-2"></i>HTML Studio
-            </button>
-            <button data-tool="diagram" class="tool-tab px-4 py-3 text-sm border-b-2 border-transparent text-slate-400 whitespace-nowrap">
-                <i data-lucide="workflow" class="w-4 h-4 inline mr-2"></i>Diagram Designer
-            </button>
-        </div>
-
-        <div class="flex-1 overflow-auto">
-            <div id="tool-formatter" class="tool-panel p-4 h-full flex flex-col gap-3">
-                <div class="flex gap-2 flex-wrap">
-                    <button onclick="formatDoc()" class="px-3 py-2 bg-yellow-600/20 text-yellow-500 rounded-lg border border-yellow-600/30 text-sm flex items-center gap-2">
-                        <i data-lucide="wand-2" class="w-4 h-4"></i> Format
-                    </button>
-                    <button onclick="triggerTTS()" class="px-3 py-2 bg-purple-600/20 text-purple-400 rounded-lg border border-purple-600/30 text-sm flex items-center gap-2">
-                        <i data-lucide="volume-2" class="w-4 h-4"></i> Read
-                    </button>
-                    <button onclick="toggleDictation()" class="px-3 py-2 bg-red-600/20 text-red-400 rounded-lg border border-red-600/30 text-sm flex items-center gap-2">
-                        <i data-lucide="mic" class="w-4 h-4"></i> Dictate
-                    </button>
-                </div>
-                <div id="doc-editor" contenteditable="true" class="flex-1 bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-slate-200 focus:outline-none focus:border-yellow-500 overflow-y-auto prose prose-invert max-w-none">
-                    <h1 class="font-regal">Document Title</h1>
-                    <p>Start writing...</p>
-                </div>
-            </div>
-
-            <div id="tool-html" class="tool-panel hidden p-4 h-full flex flex-col gap-3">
-                <div class="flex gap-2">
-                    <button onclick="sanitizeHTML()" class="px-3 py-2 bg-blue-600/20 text-blue-400 text-sm rounded border border-blue-600/30">Sanitize</button>
-                    <button onclick="downloadCode()" class="px-3 py-2 bg-green-600/20 text-green-400 text-sm rounded border border-green-600/30">Download</button>
-                    <button onclick="previewHTML()" class="px-3 py-2 bg-yellow-600/20 text-yellow-500 text-sm rounded border border-yellow-600/30">Preview</button>
-                </div>
-                <textarea id="html-input" class="flex-1 bg-slate-900/50 border border-slate-700 rounded-lg p-4 font-mono text-sm text-slate-300 outline-none resize-none" placeholder="Paste HTML/CSS/JS..."></textarea>
-                <iframe id="html-preview" class="hidden flex-1 bg-white rounded-lg"></iframe>
-            </div>
-
-            <div id="tool-diagram" class="tool-panel hidden p-4 h-full flex flex-col gap-3">
-                <input type="text" id="visual-prompt" class="bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2 text-sm text-white" placeholder="Describe diagram (e.g., 'Audit flow')...">
-                <button onclick="generateDiagram()" class="px-4 py-2 bg-yellow-600/20 text-yellow-500 rounded-lg border border-yellow-600/30 font-bold">
-                    GENERATE
+        <div class="flex-1 overflow-y-auto py-4">
+            <div class="px-4 mb-4">
+                <button onclick="showWorkspace()" class="w-full flex items-center gap-3 px-4 py-3 bg-yellow-600/10 border border-yellow-600/30 rounded-lg text-yellow-500 hover:bg-yellow-600/20 transition-all">
+                    <i data-lucide="zap" class="w-5 h-5"></i>
+                    <span class="font-bold">Quantum Workspace</span>
                 </button>
-                <div id="mermaid-container" class="flex-1 bg-slate-900/50 border border-slate-800 rounded-lg p-4 flex items-center justify-center overflow-auto">
-                    <div class="text-slate-500">Diagram renders here...</div>
-                </div>
             </div>
+
+            <div class="px-4 mb-2 text-xs font-bold text-slate-500 uppercase tracking-wider">Quick Actions</div>
+            <button onclick="openComposioSettings(); toggleMenu();" class="w-full text-left px-6 py-3 text-slate-400 hover:text-white hover:bg-white/5 flex items-center gap-3">
+                <i data-lucide="link" class="w-4 h-4"></i> Rube Integration
+                <span id="rube-status-menu" class="ml-auto w-2 h-2 rounded-full bg-slate-600"></span>
+            </button>
+            <button onclick="clearChat(); toggleMenu();" class="w-full text-left px-6 py-3 text-slate-400 hover:text-white hover:bg-white/5 flex items-center gap-3">
+                <i data-lucide="trash-2" class="w-4 h-4"></i> Clear Chat
+            </button>
+        </div>
+
+        <div class="p-4 border-t border-slate-800">
+            <button onclick="openSettings(); toggleMenu();" class="flex items-center gap-2 text-sm text-slate-500 hover:text-yellow-500 transition-colors w-full">
+                <i data-lucide="key" class="w-4 h-4"></i> Gemini API Key
+            </button>
         </div>
     </div>
+
+    <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-30 hidden" onclick="toggleMenu()"></div>
 
 
     <!-- API Key Modal -->
@@ -348,14 +302,10 @@
 
     
 
-    <!-- Sidebar -->
-    
-
     <!-- Main Content -->
-    <main class="flex-1 relative flex flex-col mt-16 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] h-full">
+    <main class="flex-1 relative flex flex-col pt-16">
         <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-[#0f1522] to-black opacity-90 z-0"></div>
 
-        <!-- Mobile Header -->
         
 
         <!-- Dynamic Views -->
@@ -978,84 +928,80 @@
                 container.innerHTML = `<span class="text-red-500">Generation Failed</span>`;
             }
         }
-
-        // Mobile Menu Toggle
-        document.getElementById('menu-btn').addEventListener('click', () => {
-            document.getElementById('slide-menu').classList.toggle('-translate-x-full');
-            document.getElementById('menu-overlay').classList.toggle('hidden');
-        });
-
-        document.getElementById('menu-close-btn').addEventListener('click', () => {
-            document.getElementById('slide-menu').classList.add('-translate-x-full');
-            document.getElementById('menu-overlay').classList.add('hidden');
-        });
-
-        document.getElementById('menu-overlay').addEventListener('click', () => {
-            document.getElementById('slide-menu').classList.add('-translate-x-full');
-            document.getElementById('menu-overlay').classList.add('hidden');
-        });
-
-        // Persona Selector
-        document.getElementById('persona-select').addEventListener('change', (e) => {
-            currentState.mode = e.target.value;
-            addSystemMessage(`Persona switched to: ${currentState.mode}`);
-        });
-
-        // Quantum Workspace
-        function showWorkspace() {
-            document.getElementById('workspace').classList.remove('hidden');
-            document.getElementById('slide-menu').classList.add('-translate-x-full');
-            document.getElementById('menu-overlay').classList.add('hidden');
-            lucide.createIcons();
-        }
-
-        function closeWorkspace() {
-            document.getElementById('workspace').classList.add('hidden');
-        }
-
-        // Tool Tabs
-        document.querySelectorAll('.tool-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tool = tab.getAttribute('data-tool');
-
-                // Update tabs
-                document.querySelectorAll('.tool-tab').forEach(t => {
-                    t.classList.remove('border-yellow-500', 'text-yellow-500');
-                    t.classList.add('border-transparent', 'text-slate-400');
-                });
-                tab.classList.add('border-yellow-500', 'text-yellow-500');
-                tab.classList.remove('border-transparent', 'text-slate-400');
-
-                // Update panels
-                document.querySelectorAll('.tool-panel').forEach(p => p.classList.add('hidden'));
-                document.getElementById('tool-' + tool).classList.remove('hidden');
-
-                lucide.createIcons();
-            });
-        });
-
-        function clearChat() {
-            document.getElementById('chat-container').innerHTML = '';
-            addSystemMessage('Chat cleared. Ready for new session.');
-            document.getElementById('slide-menu').classList.add('-translate-x-full');
-            document.getElementById('menu-overlay').classList.add('hidden');
-        }
-
-        function previewHTML() {
-            const code = document.getElementById('html-input').value;
-            const preview = document.getElementById('html-preview');
-            const input = document.getElementById('html-input');
-
-            if (preview.classList.contains('hidden')) {
-                preview.classList.remove('hidden');
-                input.classList.add('hidden');
-                preview.srcdoc = code;
-            } else {
-                preview.classList.add('hidden');
-                input.classList.remove('hidden');
-            }
-        }
-
     </script>
+
+    <!-- Quantum Workspace Modal -->
+    <div id="workspace-modal" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex flex-col">
+        <div class="h-full flex flex-col">
+            <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
+                <h2 class="font-regal text-xl text-yellow-500 flex items-center gap-2">
+                    <i data-lucide="zap" class="w-6 h-6"></i>
+                    Quantum Workspace
+                </h2>
+                <button onclick="closeWorkspace()" class="text-slate-400 hover:text-white p-2">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <div class="flex overflow-x-auto border-b border-slate-800 bg-slate-900/30">
+                <button onclick="switchTool('formatter')" data-tool="formatter" class="tool-tab active px-6 py-3 text-sm font-semibold whitespace-nowrap flex items-center gap-2">
+                    <i data-lucide="file-edit" class="w-4 h-4"></i>Document Formatter
+                </button>
+                <button onclick="switchTool('html')" data-tool="html" class="tool-tab px-6 py-3 text-sm font-semibold whitespace-nowrap flex items-center gap-2">
+                    <i data-lucide="code" class="w-4 h-4"></i>HTML Studio
+                </button>
+                <button onclick="switchTool('diagram')" data-tool="diagram" class="tool-tab px-6 py-3 text-sm font-semibold whitespace-nowrap flex items-center gap-2">
+                    <i data-lucide="workflow" class="w-4 h-4"></i>Diagram Designer
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-auto">
+                <div id="tool-formatter" class="tool-content p-4 h-full">
+                    <div class="h-full flex flex-col gap-4">
+                        <div class="flex gap-2 flex-wrap">
+                            <button onclick="formatDoc()" class="px-4 py-2 bg-yellow-600/20 text-yellow-500 rounded-lg border border-yellow-600/30 text-sm flex items-center gap-2">
+                                <i data-lucide="wand-2" class="w-4 h-4"></i> Format
+                            </button>
+                            <button onclick="triggerTTS()" class="px-4 py-2 bg-purple-600/20 text-purple-400 rounded-lg border border-purple-600/30 text-sm flex items-center gap-2">
+                                <i data-lucide="volume-2" class="w-4 h-4"></i> Read
+                            </button>
+                            <button onclick="toggleDictation()" id="dictate-btn-formatter" class="px-4 py-2 bg-red-600/20 text-red-400 rounded-lg border border-red-600/30 text-sm flex items-center gap-2">
+                                <i data-lucide="mic" class="w-4 h-4"></i> Dictate
+                            </button>
+                        </div>
+                        <div id="doc-editor" contenteditable="true" class="flex-1 bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-slate-200 focus:outline-none focus:border-yellow-500 overflow-y-auto prose prose-invert max-w-none">
+                            <h1 class="font-regal">Governance Document</h1>
+                            <p>Start drafting your protocol here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tool-html" class="tool-content hidden p-4 h-full">
+                    <div class="h-full flex flex-col gap-4">
+                        <div class="flex gap-2 flex-wrap">
+                            <button onclick="sanitizeHTML()" class="px-3 py-2 bg-blue-600/20 text-blue-400 text-sm rounded border border-blue-600/30">Sanitize</button>
+                            <button onclick="downloadCode()" class="px-3 py-2 bg-green-600/20 text-green-400 text-sm rounded border border-green-600/30">Download</button>
+                            <button onclick="togglePreview()" class="px-3 py-2 bg-yellow-600/20 text-yellow-500 text-sm rounded border border-yellow-600/30">Preview</button>
+                        </div>
+                        <textarea id="html-input" class="flex-1 bg-slate-900/50 border border-slate-700 rounded-lg p-4 font-mono text-sm text-slate-300 outline-none resize-none" placeholder="Paste HTML/CSS/JS here..."></textarea>
+                        <iframe id="html-preview" class="hidden flex-1 bg-white rounded-lg w-full border-none"></iframe>
+                    </div>
+                </div>
+
+                <div id="tool-diagram" class="tool-content hidden p-4 h-full">
+                    <div class="h-full flex flex-col gap-4">
+                        <input type="text" id="visual-prompt" class="bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2 text-sm text-white focus:border-yellow-500 outline-none" placeholder="Describe diagram (e.g., 'Audit approval sequence')...">
+                        <button onclick="generateDiagram()" class="px-6 py-2 bg-yellow-600/20 text-yellow-500 rounded-lg border border-yellow-600/30 font-bold text-sm">
+                            GENERATE DIAGRAM
+                        </button>
+                        <div id="mermaid-container" class="flex-1 bg-slate-900/50 border border-slate-800 rounded-lg p-4 flex items-center justify-center overflow-auto">
+                            <div class="text-slate-500 italic text-sm">Diagram will render here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
