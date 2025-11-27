@@ -690,6 +690,12 @@
                 });
 
                 const data = await response.json();
+
+                // Check if response is valid
+                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+                    throw new Error(data.error?.message || "Invalid API response. Please check your API key.");
+                }
+
                 const aiText = data.candidates[0].content.parts[0].text;
 
                 document.getElementById(loaderId).remove();
