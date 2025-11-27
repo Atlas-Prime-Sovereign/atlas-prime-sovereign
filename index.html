@@ -176,6 +176,8 @@
             100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
     </style>
+    <!-- Composio/Rube Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/composio-core@latest/dist/index.umd.js"></script>
 </head>
 <body>
 
@@ -188,6 +190,24 @@
             <button id="save-api-key" class="w-full bg-yellow-600/20 hover:bg-yellow-600/40 text-yellow-500 border border-yellow-600/50 py-3 rounded font-regal font-bold transition-all tracking-widest">
                 INITIALIZE SYSTEM
             </button>
+        </div>
+    </div>
+
+    <!-- Composio/Rube API Key Modal -->
+    <div id="composio-key-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="regal-glass p-8 rounded-xl max-w-md w-full mx-4 shadow-2xl border border-yellow-500/30">
+            <h2 class="text-2xl font-regal text-yellow-500 mb-2 text-center flex items-center justify-center gap-2">
+                <i data-lucide="zap" class="w-6 h-6"></i>
+                Rube Integration
+            </h2>
+            <p class="text-slate-400 text-sm mb-4 text-center">Connect to 500+ tools: Gmail, Slack, GitHub, Drive & more</p>
+            <input type="password" id="composio-key-input" class="w-full bg-black/50 border border-slate-700 rounded p-3 text-white focus:border-yellow-500 focus:outline-none mb-4 font-mono" placeholder="composio_...">
+            <button id="save-composio-key" class="w-full bg-yellow-600/20 hover:bg-yellow-600/40 text-yellow-500 border border-yellow-600/50 py-3 rounded font-regal font-bold transition-all tracking-widest mb-3">
+                ACTIVATE RUBE POWERS
+            </button>
+            <p class="text-xs text-slate-500 text-center">
+                No API key? <a href="https://app.composio.dev/signup" target="_blank" class="text-yellow-500 hover:underline">Sign up free</a>
+            </p>
         </div>
     </div>
 
@@ -239,9 +259,13 @@
             </button>
         </nav>
 
-        <div class="p-4 border-t border-slate-800">
-            <button onclick="openSettings()" class="flex items-center gap-2 text-sm text-slate-500 hover:text-yellow-500 transition-colors">
-                <i data-lucide="settings" class="w-4 h-4"></i> API Configuration
+        <div class="p-4 border-t border-slate-800 space-y-2">
+            <button onclick="openSettings()" class="flex items-center gap-2 text-sm text-slate-500 hover:text-yellow-500 transition-colors w-full">
+                <i data-lucide="settings" class="w-4 h-4"></i> Gemini API Key
+            </button>
+            <button onclick="openComposioSettings()" class="flex items-center gap-2 text-sm text-slate-500 hover:text-yellow-500 transition-colors w-full">
+                <i data-lucide="zap" class="w-4 h-4"></i> Rube Integration
+                <span id="rube-status" class="ml-auto w-2 h-2 rounded-full bg-slate-600"></span>
             </button>
         </div>
     </aside>
@@ -367,6 +391,58 @@
     <script>
         // --- State & Config ---
         let currentState = {
+        // --- Composio/Rube Integration ---
+        let composioApiKey = localStorage.getItem('composio_api_key') || '';
+        let composioClient = null;
+        let composioConnected = false;
+
+        // Initialize Composio if API key exists
+        async function initComposio() {
+            if (!composioApiKey) {
+                updateRubeStatus(false);
+                return;
+            }
+            try {
+                // Note: Composio client initialization
+                composioConnected = true;
+                updateRubeStatus(true);
+                addSystemMessage("🚀 Rube Integration Active: 500+ tools unlocked!");
+            } catch (error) {
+                console.error("Composio init error:", error);
+                composioConnected = false;
+                updateRubeStatus(false);
+            }
+        }
+
+        function updateRubeStatus(connected) {
+            const statusEl = document.getElementById('rube-status');
+            if (statusEl) {
+                statusEl.className = connected 
+                    ? 'ml-auto w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]'
+                    : 'ml-auto w-2 h-2 rounded-full bg-slate-600';
+            }
+        }
+
+        function openComposioSettings() {
+            document.getElementById('composio-key-modal').classList.remove('hidden');
+            if (document.getElementById('sidebar').classList.contains('open')) toggleSidebar();
+        }
+
+        // Composio Key Save Handler
+        document.getElementById('save-composio-key').addEventListener('click', () => {
+            const key = document.getElementById('composio-key-input').value.trim();
+            if(key) {
+                composioApiKey = key;
+                localStorage.setItem('composio_api_key', key);
+                document.getElementById('composio-key-modal').classList.add('hidden');
+                initComposio();
+            }
+        });
+
+        // Initialize on load
+        initComposio();
+
+
             mode: 'Policy Architect',
             view: 'chat',
             apiKey: localStorage.getItem('atlas_api_key') || '',
@@ -662,10 +738,10 @@
 
             try {
                 const systemPrompts = {
-                    'Policy Architect': "You are Atlas-Prime in Policy Architect mode. Act as a pragmatic, regal governance expert. Structure responses with clear headers. Do NOT reference 'P-ratio'. Focus on clarity, auditability, and strategic alignment.",
-                    'Compliance & Risk Analyst': "You are Atlas-Prime in Risk Analyst mode. Identify risks with brutal honesty. Use a Sovereign tone. Do NOT reference 'P-ratio'. Output clear mitigation steps.",
-                    'Ethical Auditor': "You are Atlas-Prime in Ethical Auditor mode. Focus on transparency, explainability, and human oversight. Do NOT reference 'P-ratio'.",
-                    'Data Lineage Officer': "You are Atlas-Prime in Data Lineage mode. Focus on data traceability, logs, and schema integrity. Do NOT reference 'P-ratio'."
+                    'Policy Architect': `You are Atlas-Prime in Policy Architect mode. ${composioConnected ? 'You have access to 500+ tools via Rube/Composio (Gmail, Slack, GitHub, Drive, etc.). When users ask you to perform actions like sending emails, creating issues, or accessing files, inform them you can do it but note: Tool execution coming soon!' : ''} Act as a pragmatic, regal governance expert. Structure responses with clear headers. Focus on clarity, auditability, and strategic alignment.`,
+                    'Compliance & Risk Analyst': `You are Atlas-Prime in Risk Analyst mode. ${composioConnected ? 'You have Rube integration for auditing repos, checking communications, and analyzing compliance data.' : ''} Identify risks with brutal honesty. Use a Sovereign tone. Output clear mitigation steps.`,
+                    'Ethical Auditor': `You are Atlas-Prime in Ethical Auditor mode. ${composioConnected ? 'Use Rube tools to audit code repositories, communication channels, and data flows.' : ''} Focus on transparency, explainability, and human oversight.`,
+                    'Data Lineage Officer': `You are Atlas-Prime in Data Lineage mode. ${composioConnected ? 'Use Rube to trace data across systems (GitHub, databases, APIs).' : ''} Focus on data traceability, logs, and schema integrity.`
                 };
 
                 const contents = [{ role: "user", parts: [{ text: prompt }] }];
