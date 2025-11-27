@@ -401,6 +401,9 @@
             document.getElementById('upload-btn').addEventListener('click', () => document.getElementById('file-input').click());
             document.getElementById('file-input').addEventListener('change', handleFileSelect);
 
+            // ⚡ SEND BUTTON FIX - THIS WAS MISSING ⚡
+            document.getElementById('send-btn').addEventListener('click', handleSend);
+
             // API Key Save
             document.getElementById('save-api-key').addEventListener('click', () => {
                 const key = document.getElementById('api-key-input').value.trim();
