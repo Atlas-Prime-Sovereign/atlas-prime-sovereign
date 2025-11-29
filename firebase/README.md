@@ -1,13 +1,11 @@
-# 🔥 Atlas-Prime Firebase Backend
+# 🔥 Firebase Backend for Atlas-Prime
 
-This directory contains the Firebase backend for secure API integration.
+This folder contains the Firebase backend for secure Gemini API integration.
 
 ## 🚀 Quick Setup
 
 ### 1. Create Firebase Project
-- Go to https://console.firebase.google.com/
-- Click "Add project"
-- Name it: **atlas-prime-sovereign**
+Go to https://console.firebase.google.com/ and create a new project called "atlas-prime-sovereign"
 
 ### 2. Install Firebase CLI
 ```bash
@@ -15,7 +13,7 @@ npm install -g firebase-tools
 firebase login
 ```
 
-### 3. Initialize Project
+### 3. Initialize Firebase
 ```bash
 firebase init
 
@@ -24,29 +22,43 @@ firebase init
 ✅ Hosting  
 ✅ Firestore
 
-# Choose: Use existing project → atlas-prime-sovereign
+# Use existing project → atlas-prime-sovereign
 ```
 
-### 4. Set Your Gemini API Key (Secure!)
+### 4. Set Gemini API Key
 ```bash
 firebase functions:config:set gemini.key="YOUR_GEMINI_API_KEY"
 ```
 
 Get your key from: https://aistudio.google.com/app/apikey
 
-### 5. Deploy!
+### 5. Deploy
 ```bash
+cd functions && npm install
+cd ..
 firebase deploy
 ```
 
-## ✨ What You Get:
-✅ Secure API key storage (server-side)
-✅ User authentication
-✅ Chat history saved to Firestore
-✅ Production-ready
-✅ FREE tier (generous limits)
+## ✨ Features
 
-## 📖 Documentation:
-See the integration guide in `/docs` folder.
+✅ **Secure** - API key hidden on server  
+✅ **Chat History** - Saved to Firestore  
+✅ **Multi-user** - Each user has own data  
+✅ **Production Ready** - Auto-scaling  
 
-Built with ❤️ by Rube 🤖
+## 💰 Cost
+
+FREE tier includes:
+- 50K Firestore reads/day
+- 2M Function calls/month
+- Unlimited hosting
+
+You'll likely stay in free tier!
+
+## 📝 Files
+
+- `functions/index.js` - Backend Cloud Functions
+- `functions/package.json` - Dependencies
+- `firebase.json` - Firebase config
+- `firestore.rules` - Security rules
+- `public/index.html` - Your app (uses Firebase if configured)
